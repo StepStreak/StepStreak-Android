@@ -3,6 +3,10 @@ package com.stepstreak.dev
 import android.os.Bundle
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.fitness.FitnessOptions
+import com.google.android.gms.fitness.data.DataType
+import com.stepstreak.dev.googleFit.GoogleFitManager
+import com.stepstreak.dev.googleFit.GoogleSignInManager
 import dev.hotwire.strada.KotlinXJsonConverter
 import dev.hotwire.strada.Strada
 import dev.hotwire.turbo.BuildConfig
