@@ -28,19 +28,22 @@ class WebHomeFragment : WebFragment() {
     private lateinit var googleSignInManger: GoogleSignInManager
     private lateinit var googleFitManager: GoogleFitManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        googleSignInManger = GoogleSignInManager(fragment.requireActivity(), fitnessOptions)
-        googleFitManager = GoogleFitManager(fragment.requireActivity(), fitnessOptions)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val account = GoogleSignIn.getLastSignedInAccount(fragment.requireContext())
         if (account == null || !GoogleSignIn.hasPermissions(account, fitnessOptions)) {
+            googleSignInManger = GoogleSignInManager(fragment.requireActivity(), fitnessOptions)
+            googleFitManager = GoogleFitManager(fragment.requireActivity(), fitnessOptions)
+
             googleSignInManger.signIn{
                 fragment.lifecycleScope.launch {
                     googleFitManager.accessGoogleFit()
                 }
             }
         }
-
+    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_web_home, container, false)
     }
 
