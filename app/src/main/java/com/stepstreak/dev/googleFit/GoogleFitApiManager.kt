@@ -1,8 +1,11 @@
 package com.stepstreak.dev.googleFit
 
+import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.Field
+import com.stepstreak.dev.util.DataStoreManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,7 +17,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class GoogleFitApiManager {
+class GoogleFitApiManager(private val activity: Activity) {
+
+    private val dataStoreManager = DataStoreManager(activity)
 
     private fun createJsonData(dataSets: List<DataSet>): String {
         val activityMap = mutableMapOf<String, JSONObject>()
@@ -68,13 +73,32 @@ class GoogleFitApiManager {
         val url = "http://192.168.0.89:3000/api/activities"
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val body = jsonData.toRequestBody(mediaType)
+        val headers = okhttp3.Headers.Builder()
+            .add("Content-Type", "application/json")
+            .add("Authorization", "Bearer ${dataStoreManager.getToken()}")
+            .build()
+
         val request = Request.Builder()
             .url(url)
             .post(body)
+            .headers(headers)
             .build()
 
         client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            if (!response.isSuccessful){
+                when(response.code) {
+                    401 -> activity.runOnUiThread {
+                        Toast.makeText(activity, "Error: ${response.code} - Unauthorized", Toast.LENGTH_LONG).show()
+                    }
+                    500 -> activity.runOnUiThread {
+                        Toast.makeText(activity, "Could not connect to server", Toast.LENGTH_LONG).show()
+                    }
+                    else -> activity.runOnUiThread {
+                        Toast.makeText(activity, "Error: ${response.code}", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            }
             Log.i("GoogleFit", "Data sent to API: ${response.body?.string()}")
         }
     }

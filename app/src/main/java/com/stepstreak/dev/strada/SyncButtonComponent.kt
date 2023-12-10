@@ -17,7 +17,6 @@ import com.stepstreak.dev.base.NavDestination
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepstreak.dev.R
 import com.stepstreak.dev.googleFit.GoogleFitManager
-import com.stepstreak.dev.googleFit.GoogleSignInManager
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 

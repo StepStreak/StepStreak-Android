@@ -77,7 +77,7 @@ class GoogleFitManager(private val activity: FragmentActivity, private val fitne
     }
 
     private suspend fun processFitnessData(responses: List<DataReadResponse>) {
-        googleFitApiManager = GoogleFitApiManager()
+        googleFitApiManager = GoogleFitApiManager(activity)
 
         val filteredDataSets = mutableListOf<DataSet>()
 
