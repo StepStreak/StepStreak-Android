@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.Field
+import com.stepstreak.dev.BuildConfig
 import com.stepstreak.dev.util.DataStoreManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -70,7 +71,7 @@ class GoogleFitApiManager(private val activity: Activity) {
     fun sendPostRequest(dataSets: List<DataSet>) {
         val jsonData = createJsonData(dataSets)
         val client = OkHttpClient()
-        val url = "http://192.168.0.89:3000/api/activities"
+        val url = BuildConfig.BASE_URL + "api/activities"
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val body = jsonData.toRequestBody(mediaType)
         val headers = okhttp3.Headers.Builder()

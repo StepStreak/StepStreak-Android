@@ -19,12 +19,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://192.168.0.89:3000/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"https://stepstreak.zajelbook.com/\"")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -36,6 +41,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
 }
