@@ -26,7 +26,6 @@ class WebHomeFragment : WebFragment() {
         .build()
 
     private lateinit var googleSignInManger: GoogleSignInManager
-    private lateinit var googleFitManager: GoogleFitManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,13 +33,8 @@ class WebHomeFragment : WebFragment() {
         val account = GoogleSignIn.getLastSignedInAccount(fragment.requireContext())
         if (account == null || !GoogleSignIn.hasPermissions(account, fitnessOptions)) {
             googleSignInManger = GoogleSignInManager(fragment.requireActivity(), fitnessOptions)
-            googleFitManager = GoogleFitManager(fragment.requireActivity(), fitnessOptions)
 
-            googleSignInManger.signIn{
-                fragment.lifecycleScope.launch {
-                    googleFitManager.accessGoogleFit()
-                }
-            }
+            googleSignInManger.signIn{}
         }
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
