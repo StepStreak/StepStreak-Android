@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.webkit.WebView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
+import com.stepstreak.dev.R
 import dev.hotwire.strada.Strada
 import dev.hotwire.turbo.config.Turbo
 import dev.hotwire.turbo.config.TurboPathConfigurationProperties
@@ -14,6 +17,9 @@ import com.stepstreak.dev.strada.bridgeComponentFactories
 val TurboPathConfigurationProperties.description: String?
     get() = get("description")
 
+fun Toolbar.displayBackButtonAsCloseIcon() {
+    navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_close)
+}
 @Suppress("DEPRECATION")
 fun WebView.initDayNightTheme() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {

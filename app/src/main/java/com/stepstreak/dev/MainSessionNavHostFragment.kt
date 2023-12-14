@@ -2,6 +2,7 @@ package com.stepstreak.dev
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.stepstreak.dev.util.BASE_URL
 import dev.hotwire.strada.Bridge
 import dev.hotwire.turbo.config.TurboPathConfiguration
 import com.stepstreak.dev.util.HOME_URL
@@ -29,7 +30,7 @@ class MainSessionNavHostFragment : TurboSessionNavHostFragment() {
 
     override val pathConfigurationLocation: TurboPathConfiguration.Location
         get() = TurboPathConfiguration.Location(
-            assetFilePath = "json/configuration.json"
+            remoteFileUrl = "$BASE_URL/configurations/android.json",
         )
 
     override fun onSessionCreated() {
