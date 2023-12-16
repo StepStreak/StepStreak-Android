@@ -57,8 +57,8 @@ class SyncButtonComponent(
     }
 
     private fun showFloatingButton() {
-        val view = fragment.view?.rootView ?: return
-        val context = view.context
+        val turboView = fragment.view?.findViewById<FrameLayout>(dev.hotwire.turbo.R.id.turbo_view) ?: return
+        val context = turboView.context
 
         val floatingActionButton = FloatingActionButton(context).apply {
             val marginY = resources.getDimensionPixelSize(R.dimen.action_button_y)
@@ -79,7 +79,7 @@ class SyncButtonComponent(
             elevation = 0f
         }
 
-        (view as ViewGroup).addView(floatingActionButton)
+        turboView.addView(floatingActionButton)
     }
 
     private fun syncData() {

@@ -6,7 +6,7 @@
     <dimen name="keyline_4">16dp</dimen>
     <dimen name="keyline_5">24dp</dimen>
 
-    <dimen name="action_button_y">64dp</dimen>
+    <dimen name="action_button_y">48dp</dimen>
     <dimen name="action_button_x">32dp</dimen>
 
     <dimen name="toolbar_elevation">4dp</dimen>
