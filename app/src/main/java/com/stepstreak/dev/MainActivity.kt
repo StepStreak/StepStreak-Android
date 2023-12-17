@@ -1,7 +1,6 @@
 package com.stepstreak.dev
 
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.webkit.WebView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,8 +13,6 @@ import dev.hotwire.turbo.activities.TurboActivity
 import dev.hotwire.turbo.config.Turbo
 import dev.hotwire.turbo.delegates.TurboActivityDelegate
 import android.Manifest
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -31,30 +28,6 @@ class MainActivity : AppCompatActivity(), TurboActivity {
         Manifest.permission.ACTIVITY_RECOGNITION
     )
 
-    // Declare the launcher at the top of your Activity/Fragment:
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            sharedPrefManager = DataStoreManager(this)
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new FCM registration token
-                val token = task.result
-
-                // Log and toast
-                val notificationToken = token.toString()
-                sharedPrefManager.saveNotificationToken(notificationToken)
-            })
-        } else {
-            // TODO: Inform user that that your app will not show notifications.
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -69,25 +42,32 @@ class MainActivity : AppCompatActivity(), TurboActivity {
     private val requestMultiplePermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-        val granted = permissions.entries.all {
-            it.value == true
-        }
-        if (!granted) {
-            Log.e("PERMISSIONS", "Permissions not granted.")
-            checkPermissions()
-            askNotificationPermission()
+        permissions.forEach { (permission, isGranted) ->
+            when (permission) {
+                Manifest.permission.POST_NOTIFICATIONS -> {
+                    if (isGranted) {
+                        handlePostNotificationsPermissionGranted()
+                    }
+                }
+                Manifest.permission.ACTIVITY_RECOGNITION -> {
+                    if (!isGranted) {
+                        checkPermissions()
+                    }
+                }
+            }
         }
     }
 
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    private fun handlePostNotificationsPermissionGranted() {
+        sharedPrefManager = DataStoreManager(this)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
             }
-        }
+
+            val token = task.result
+            sharedPrefManager.saveNotificationToken(token.toString())
+        })
     }
 
     private fun checkPermissions() {
@@ -101,6 +81,7 @@ class MainActivity : AppCompatActivity(), TurboActivity {
             }
         }
     }
+
     private fun configApp() {
         Strada.config.jsonConverter = KotlinXJsonConverter()
 

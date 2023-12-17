@@ -2,9 +2,7 @@ package com.stepstreak.dev.strada
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.android.gms.fitness.data.DataSet
 import com.stepstreak.dev.BuildConfig
 import com.stepstreak.dev.MessageData
 import dev.hotwire.strada.BridgeComponent
@@ -36,7 +34,6 @@ class TokenComponent(
     private val sharedPrefManager = DataStoreManager(fragment.requireContext())
 
     override fun onReceive(message: Message) {
-        Log.d("TurboDemo", "onReceive $message")
         val data = message.data<MessageData>() ?: return
 
         when (message.event) {
