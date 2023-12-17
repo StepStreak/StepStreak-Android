@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
 import com.stepstreak.dev.R
-import com.stepstreak.dev.googleFit.GoogleFitManager
 import com.stepstreak.dev.googleFit.GoogleSignInManager
 import dev.hotwire.turbo.nav.TurboNavGraphDestination
-import kotlinx.coroutines.launch
 
 @TurboNavGraphDestination(uri = "turbo://fragment/web/home")
 class WebHomeFragment : WebFragment() {

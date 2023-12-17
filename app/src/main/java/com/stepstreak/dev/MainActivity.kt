@@ -15,13 +15,21 @@ import dev.hotwire.turbo.config.Turbo
 import dev.hotwire.turbo.delegates.TurboActivityDelegate
 import android.Manifest
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.stepstreak.dev.util.DataStoreManager
 
 class MainActivity : AppCompatActivity(), TurboActivity {
+    private val REQUEST_ACTIVITY_RECOGNITION = 123
     override lateinit var delegate: TurboActivityDelegate
     private lateinit var sharedPrefManager : DataStoreManager
+
+    private val permissions = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS,
+        Manifest.permission.ACTIVITY_RECOGNITION
+    )
 
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
@@ -50,30 +58,49 @@ class MainActivity : AppCompatActivity(), TurboActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        askNotificationPermission()
+
+        requestMultiplePermissionsLauncher.launch(permissions)
+
         delegate = TurboActivityDelegate(this, R.id.main_nav_host)
         configApp()
+    }
+
+    // Declare the launcher at the top of your Activity/Fragment:
+    private val requestMultiplePermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions.entries.all {
+            it.value == true
+        }
+        if (!granted) {
+            Log.e("PERMISSIONS", "Permissions not granted.")
+            checkPermissions()
+            askNotificationPermission()
+        }
     }
 
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
                 PackageManager.PERMISSION_GRANTED
             ) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }
 
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+            != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACTIVITY_RECOGNITION)) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+                    REQUEST_ACTIVITY_RECOGNITION)
+            }
+        }
+    }
     private fun configApp() {
         Strada.config.jsonConverter = KotlinXJsonConverter()
 

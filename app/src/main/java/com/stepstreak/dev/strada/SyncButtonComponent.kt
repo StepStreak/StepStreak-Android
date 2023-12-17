@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.google.android.gms.fitness.FitnessOptions
@@ -18,8 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepstreak.dev.R
 import com.stepstreak.dev.googleFit.GoogleFitManager
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.stepstreak.dev.googleFit.GoogleSignInManager
 import kotlinx.coroutines.launch
 
 /**

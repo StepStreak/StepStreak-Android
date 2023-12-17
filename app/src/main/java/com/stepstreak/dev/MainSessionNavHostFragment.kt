@@ -31,7 +31,7 @@ class MainSessionNavHostFragment : TurboSessionNavHostFragment() {
     override val pathConfigurationLocation: TurboPathConfiguration.Location
         get() = TurboPathConfiguration.Location(
             assetFilePath = "json/configuration.json",
-            remoteFileUrl = "$BASE_URL/configurations/android.json",
+            remoteFileUrl = BASE_URL + "configurations/android.json",
         )
 
     override fun onSessionCreated() {
