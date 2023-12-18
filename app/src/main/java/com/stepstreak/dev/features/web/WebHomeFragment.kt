@@ -15,24 +15,8 @@ import dev.hotwire.turbo.nav.TurboNavGraphDestination
 @TurboNavGraphDestination(uri = "turbo://fragment/web/home")
 class WebHomeFragment : WebFragment() {
 
-    private val fitnessOptions = FitnessOptions.builder()
-        .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-        .addDataType(DataType.TYPE_DISTANCE_DELTA, FitnessOptions.ACCESS_READ)
-        .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
-        .addDataType(DataType.TYPE_CALORIES_EXPENDED, FitnessOptions.ACCESS_READ)
-        .build()
-
-    private lateinit var googleSignInManger: GoogleSignInManager
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val account = GoogleSignIn.getLastSignedInAccount(fragment.requireContext())
-        if (account == null || !GoogleSignIn.hasPermissions(account, fitnessOptions)) {
-            googleSignInManger = GoogleSignInManager(fragment.requireActivity(), fitnessOptions)
-
-            googleSignInManger.signIn{}
-        }
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_web_home, container, false)

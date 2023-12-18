@@ -14,8 +14,12 @@ import dev.hotwire.turbo.config.Turbo
 import dev.hotwire.turbo.delegates.TurboActivityDelegate
 import android.Manifest
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.fitness.FitnessOptions
+import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.stepstreak.dev.googleFit.GoogleSignInManager
 import com.stepstreak.dev.util.DataStoreManager
 
 class MainActivity : AppCompatActivity(), TurboActivity {
@@ -28,11 +32,27 @@ class MainActivity : AppCompatActivity(), TurboActivity {
         Manifest.permission.ACTIVITY_RECOGNITION
     )
 
+    private val fitnessOptions = FitnessOptions.builder()
+        .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+        .addDataType(DataType.TYPE_DISTANCE_DELTA, FitnessOptions.ACCESS_READ)
+        .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
+        .addDataType(DataType.TYPE_CALORIES_EXPENDED, FitnessOptions.ACCESS_READ)
+        .build()
+
+    private lateinit var googleSignInManger: GoogleSignInManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         requestMultiplePermissionsLauncher.launch(permissions)
+
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account == null || !GoogleSignIn.hasPermissions(account, fitnessOptions)) {
+            googleSignInManger = GoogleSignInManager(this, fitnessOptions)
+
+            googleSignInManger.signIn{}
+        }
 
         delegate = TurboActivityDelegate(this, R.id.main_nav_host)
         configApp()
