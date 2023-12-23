@@ -1,4 +1,4 @@
-package dev.hotwire.turbo.demo.features.web
+package com.stepstreak.dev.features.web
 
 import android.annotation.SuppressLint
 import android.os.Bundle

@@ -8,8 +8,9 @@ import dev.hotwire.turbo.config.TurboPathConfiguration
 import com.stepstreak.dev.util.HOME_URL
 import com.stepstreak.dev.util.customUserAgent
 import com.stepstreak.dev.util.initDayNightTheme
-import dev.hotwire.turbo.demo.features.web.WebFragment
-import dev.hotwire.turbo.demo.features.web.WebHomeFragment
+import com.stepstreak.dev.features.web.WebFragment
+import com.stepstreak.dev.features.web.WebHomeFragment
+import com.stepstreak.dev.features.web.WebPermissionsFragment
 import dev.hotwire.turbo.session.TurboSessionNavHostFragment
 import kotlin.reflect.KClass
 
@@ -25,7 +26,8 @@ class MainSessionNavHostFragment : TurboSessionNavHostFragment() {
     override val registeredFragments: List<KClass<out Fragment>>
         get() = listOf(
             WebFragment::class,
-            WebHomeFragment::class
+            WebHomeFragment::class,
+            WebPermissionsFragment::class
         )
 
     override val pathConfigurationLocation: TurboPathConfiguration.Location

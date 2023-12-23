@@ -3,6 +3,7 @@ package com.stepstreak.dev.util
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
 import android.webkit.WebView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -38,7 +39,12 @@ fun WebView.initDayNightTheme() {
 
 val WebView.customUserAgent: String
     get() {
-        val turboSubstring = Turbo.userAgentSubstring()
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        Log.d("TurboDemo", "packageInfo: $packageInfo")
+        var turboSubstring = Turbo.userAgentSubstring()
+        turboSubstring += " - " + packageInfo.versionName
+
+        Log.d("TurboDemo", "turboSubstring: $turboSubstring")
         val stradaSubstring = Strada.userAgentSubstring(bridgeComponentFactories)
         return "$turboSubstring; $stradaSubstring; ${settings.userAgentString}"
     }

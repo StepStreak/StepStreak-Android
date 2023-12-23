@@ -33,6 +33,16 @@
         "uri": "turbo://fragment/web/modal/sheet",
         "pull_to_refresh_enabled": false
       }
+    },
+    {
+      "patterns": [
+        "/permissions"
+      ],
+      "properties": {
+        "uri": "turbo://fragment/web/permissions",
+        "presentation": "replace",
+        "pull_to_refresh_enabled": false
+      }
     }
   ]
 }

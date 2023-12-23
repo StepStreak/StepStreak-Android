@@ -1,4 +1,4 @@
-package dev.hotwire.turbo.demo.features.web
+package com.stepstreak.dev.features.web
 
 import android.os.Bundle
 import android.view.View
