@@ -13,7 +13,7 @@ android {
         applicationId = "com.stepstreak.dev"
         minSdk = 26
         targetSdk = 34
-        versionCode = 20240107
+        versionCode = 202401072
         versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -29,7 +29,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"https://stepstreak.zajelbook.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://stepstreak.xyz/\"")
             signingConfig = signingConfigs.getByName("debug")
         }
     }
