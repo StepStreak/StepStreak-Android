@@ -10,8 +10,12 @@ import dev.hotwire.turbo.activities.TurboActivity
 import dev.hotwire.turbo.config.Turbo
 import dev.hotwire.turbo.delegates.TurboActivityDelegate
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
+import com.google.android.gms.security.ProviderInstaller
 import com.stepstreak.dev.googleFit.GoogleSignInManager
 
 class MainActivity : AppCompatActivity(), TurboActivity {
@@ -32,6 +36,20 @@ class MainActivity : AppCompatActivity(), TurboActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            ProviderInstaller.installIfNeeded(this)
+        } catch (e: GooglePlayServicesRepairableException) {
+            // Google Play services is not installed, up-to-date, or enabled
+            // Show dialog to the user to update, enable, or install Google Play services
+            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0)
+                ?.show()
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            // Google Play services is not available entirely
+            // Handle this case as you want, e.g., show a dialog or a toast to the user
+        }
+
+
         setContentView(R.layout.activity_main)
 
         val account = GoogleSignIn.getLastSignedInAccount(this)

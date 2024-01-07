@@ -13,7 +13,6 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import org.json.JSONArray
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -89,7 +88,7 @@ class GoogleFitApiManager(private val activity: Activity) {
             if (!response.isSuccessful){
                 when(response.code) {
                     401 -> activity.runOnUiThread {
-                        Toast.makeText(activity, "Error: ${response.code} - Unauthorized", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Token expired. Please refresh the page.", Toast.LENGTH_LONG).show()
                     }
                     500 -> activity.runOnUiThread {
                         Toast.makeText(activity, "Could not connect to server", Toast.LENGTH_LONG).show()
