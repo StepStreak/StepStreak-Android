@@ -51,8 +51,8 @@ class WebPermissionsFragment : WebFragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         requestMultiplePermissionsLauncher.launch(permissions)
 
