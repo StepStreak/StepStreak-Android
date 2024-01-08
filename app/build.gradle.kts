@@ -13,7 +13,7 @@ android {
         applicationId = "com.stepstreak.dev"
         minSdk = 26
         targetSdk = 34
-        versionCode = 20240108
+        versionCode = 202401080
         versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
