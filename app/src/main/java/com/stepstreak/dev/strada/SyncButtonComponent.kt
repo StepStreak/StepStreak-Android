@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepstreak.dev.R
 import com.stepstreak.dev.googleFit.GoogleFitManager
 import androidx.lifecycle.lifecycleScope
+import com.stepstreak.dev.SyncMessageData
 import kotlinx.coroutines.launch
 
 /**
@@ -43,23 +45,26 @@ class SyncButtonComponent(
     override fun onReceive(message: Message) {
         Log.d("TurboDemo", "onReceive $message")
         when (message.event) {
-            "connect" -> handleConnectEvent()
+            "connect" -> handleConnectEvent(message)
             else -> Log.w("TurboDemo", "Unknown event for message: $message")
         }
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
-    private fun handleConnectEvent() {
-        showFloatingButton()
+    private fun handleConnectEvent(message: Message) {
+        showFloatingButton(message)
     }
 
-    private fun showFloatingButton() {
+    private fun showFloatingButton(message: Message) {
+        val data = message.data<SyncMessageData>() ?: return
+
         val turboView = fragment.view?.findViewById<FrameLayout>(dev.hotwire.turbo.R.id.turbo_view) ?: return
         val context = turboView.context
 
+        val marginY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, data.syncY.toFloat(), fragment.resources.displayMetrics).toInt()
+        val marginX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, data.syncX.toFloat(), fragment.resources.displayMetrics).toInt()
+
         val floatingActionButton = FloatingActionButton(context).apply {
-            val marginY = resources.getDimensionPixelSize(R.dimen.action_button_y)
-            val marginX = resources.getDimensionPixelSize(R.dimen.action_button_x)
             val params = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
