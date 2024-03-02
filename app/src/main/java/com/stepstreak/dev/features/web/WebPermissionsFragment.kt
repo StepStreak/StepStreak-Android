@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.stepstreak.dev.MainActivity
 import com.stepstreak.dev.R
 import com.stepstreak.dev.util.DataStoreManager
+import dev.hotwire.turbo.errors.TurboVisitError
 import dev.hotwire.turbo.nav.TurboNavGraphDestination
 
 @TurboNavGraphDestination(uri = "turbo://fragment/web/permissions")
@@ -64,7 +65,7 @@ class WebPermissionsFragment : WebFragment() {
     }
 
     @SuppressLint("InflateParams")
-    override fun createErrorView(statusCode: Int): View {
+    override fun createErrorView(error: TurboVisitError): View {
         return layoutInflater.inflate(R.layout.error_web_home, null)
     }
 

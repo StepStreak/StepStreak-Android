@@ -10,6 +10,7 @@ import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
 import com.stepstreak.dev.R
 import com.stepstreak.dev.googleFit.GoogleSignInManager
+import dev.hotwire.turbo.errors.TurboVisitError
 import dev.hotwire.turbo.nav.TurboNavGraphDestination
 
 @TurboNavGraphDestination(uri = "turbo://fragment/web/home")
@@ -23,7 +24,7 @@ class WebHomeFragment : WebFragment() {
     }
 
     @SuppressLint("InflateParams")
-    override fun createErrorView(statusCode: Int): View {
+    override fun createErrorView(error: TurboVisitError): View {
         return layoutInflater.inflate(R.layout.error_web_home, null)
     }
 

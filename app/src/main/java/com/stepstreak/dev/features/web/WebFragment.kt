@@ -7,6 +7,8 @@ import com.stepstreak.dev.R
 import com.stepstreak.dev.base.NavDestination
 import com.stepstreak.dev.strada.bridgeComponentFactories
 import com.stepstreak.dev.util.SIGN_IN_URL
+import dev.hotwire.turbo.errors.HttpError
+import dev.hotwire.turbo.errors.TurboVisitError
 import dev.hotwire.turbo.fragments.TurboWebFragment
 import dev.hotwire.turbo.nav.TurboNavGraphDestination
 import dev.hotwire.turbo.views.TurboWebView
@@ -58,10 +60,11 @@ open class WebFragment : TurboWebFragment(), NavDestination {
         menuProgress?.isVisible = false
     }
 
-    override fun onVisitErrorReceived(location: String, errorCode: Int) {
-        when (errorCode) {
-            401 -> navigate(SIGN_IN_URL, TurboVisitOptions(action = REPLACE))
-            else -> super.onVisitErrorReceived(location, errorCode)
+    override fun onVisitErrorReceived(location: String, error: TurboVisitError) {
+        if (error is HttpError.ClientError.Unauthorized) {
+            navigate(SIGN_IN_URL, TurboVisitOptions(action = REPLACE))
+        } else {
+            super.onVisitErrorReceived(location, error)
         }
     }
 
