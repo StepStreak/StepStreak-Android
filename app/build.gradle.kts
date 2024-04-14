@@ -49,10 +49,10 @@ android {
 
 
 dependencies {
-    implementation("dev.hotwire:turbo:7.1.0")
+    implementation("dev.hotwire:turbo:7.1.2")
     implementation("dev.hotwire:strada:1.0.0-beta3")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("androidx.browser:browser:1.7.0")
+    implementation("androidx.browser:browser:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -68,7 +68,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.google.android.gms:play-services-safetynet:18.0.1")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.android.gms:play-services-fitness:21.1.0")
