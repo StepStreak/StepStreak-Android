@@ -2,6 +2,7 @@ package com.stepstreak.dev.strada
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.stepstreak.dev.BuildConfig
 import com.stepstreak.dev.TokenMessageData
@@ -79,9 +80,13 @@ class TokenComponent(
 
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) {
-                    Log.i("NotificationToken", "Error: ${response.body?.string()}")
+                    fragment.requireActivity().runOnUiThread {
+                        Toast.makeText(fragment.requireActivity(), "API authentication failed. Please try again later", Toast.LENGTH_LONG).show()
+                    }
+                    Log.i("NotificationToken", "API authentication failed. Error: ${response.body?.string()}")
+                } else {
+                    Log.i("NotificationToken", "Data sent to API: ${response.body?.string()}")
                 }
-                Log.i("NotificationToken", "Data sent to API: ${response.body?.string()}")
             }
         }
     }
