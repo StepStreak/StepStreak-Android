@@ -27,7 +27,7 @@ class GoogleFitApiManager(private val activity: Activity) {
         for (dataSet in dataSets) {
             for (dataPoint in dataSet.dataPoints) {
                 val startDate = dataPoint.getStartTime(TimeUnit.MILLISECONDS)
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
                 val date = dateFormat.format(Date(startDate))
                 val activityObject = activityMap.getOrPut(date) { JSONObject().put("date", date) }
                 for (field in dataPoint.dataType.fields) {
